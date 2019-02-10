@@ -10,5 +10,5 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "garbage.reminder")
 public class LineProperties {
-    private String id;
+  private String id;
 }
