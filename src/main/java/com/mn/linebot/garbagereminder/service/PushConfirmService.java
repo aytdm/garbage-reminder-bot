@@ -6,8 +6,8 @@ import com.linecorp.bot.model.action.MessageAction;
 import com.linecorp.bot.model.message.TemplateMessage;
 import com.linecorp.bot.model.message.template.ConfirmTemplate;
 import com.linecorp.bot.model.response.BotApiResponse;
-import com.mn.linebot.garbagereminder.config.LineProperties;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.net.URISyntaxException;
@@ -17,11 +17,12 @@ import java.util.concurrent.ExecutionException;
 @Service
 public class PushConfirmService {
 
-  private final LineProperties lineProperties;
+  @Value("${garbage.reminder.line_bot_id}")
+  private String lineBotId;
+
   private final LineMessagingClient lineMessagingClient;
 
-  PushConfirmService(LineProperties lineProperties, LineMessagingClient lineMessagingClient) {
-    this.lineProperties = lineProperties;
+  PushConfirmService(LineMessagingClient lineMessagingClient) {
     this.lineMessagingClient = lineMessagingClient;
   }
 
@@ -31,7 +32,7 @@ public class PushConfirmService {
           lineMessagingClient
               .pushMessage(
                   new PushMessage(
-                      lineProperties.getId(),
+                      lineBotId,
                       new TemplateMessage(
                           "Tomorrow is the garbage day for burnables！",
                           new ConfirmTemplate(
