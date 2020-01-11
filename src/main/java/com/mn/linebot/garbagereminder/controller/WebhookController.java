@@ -27,14 +27,14 @@ public class WebhookController {
 
   @EventMapping
   public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws Exception {
-    log.info("event: {}", event);
+    log.debug("event: {}", event);
     TextMessageContent message = event.getMessage();
     webhookService.handleTextContent(event.getReplyToken(), event, message);
   }
 
   @EventMapping
   public void defaultMessageEvent(Event event) {
-    log.info("event: " + event);
+    log.debug("event: " + event);
   }
 
   @EventMapping

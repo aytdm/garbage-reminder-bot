@@ -39,7 +39,7 @@ public class WebhookService {
       throws Exception {
 
     String text = content.getText();
-    log.info("Got text message from {}: {}", replyToken, text);
+    log.debug("Got text message from {}: {}", replyToken, text);
 
     switch (text) {
       case "profile":
@@ -104,7 +104,7 @@ public class WebhookService {
           break;
         }
       default:
-        log.info("Returns echo message {}: {}", replyToken, text);
+        log.debug("Returns echo message {}: {}", replyToken, text);
         this.replyText(replyToken, text);
         break;
     }
@@ -118,7 +118,7 @@ public class WebhookService {
     try {
       ReplyMessage replyMessage = new ReplyMessage(replyToken, messages);
       BotApiResponse apiResponse = lineMessagingClient.replyMessage(replyMessage).get();
-      log.info("Sent messages: {}", apiResponse);
+      log.debug("Sent messages: {}", apiResponse);
     } catch (InterruptedException | ExecutionException e) {
       throw new RuntimeException(e);
     }

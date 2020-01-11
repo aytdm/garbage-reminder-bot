@@ -44,7 +44,7 @@ public class PushConfirmService {
       PushMessage pushMessage = new PushMessage(lineBotId, templateMessage);
 
       BotApiResponse response = lineMessagingClient.pushMessage(pushMessage).get();
-      log.info("Sent messages: {}", response);
+      log.debug("Sent messages: {}", response);
     } catch (InterruptedException | ExecutionException e) {
       throw new RuntimeException(e);
     }
