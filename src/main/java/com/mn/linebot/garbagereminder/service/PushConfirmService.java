@@ -6,6 +6,7 @@ import com.linecorp.bot.model.action.MessageAction;
 import com.linecorp.bot.model.message.TemplateMessage;
 import com.linecorp.bot.model.message.template.ConfirmTemplate;
 import com.linecorp.bot.model.response.BotApiResponse;
+import com.mn.linebot.garbagereminder.domain.NotificationMessageType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,10 @@ import java.util.concurrent.ExecutionException;
 @Slf4j
 @Service
 public class PushConfirmService {
+  private static final String YES = "yes";
+
+  private static final String NO = "no";
+
   private final LineMessagingClient lineMessagingClient;
 
   @Value("${garbage.reminder.line_bot_id}")
@@ -33,11 +38,11 @@ public class PushConfirmService {
                   new PushMessage(
                       lineBotId,
                       new TemplateMessage(
-                          "Tomorrow is the garbage day for burnables！",
+                          NotificationMessageType.BURNABLES.getMessage(),
                           new ConfirmTemplate(
-                              "Did you take out the garbage?",
-                              new MessageAction("yes", "yes"),
-                              new MessageAction("no", "no")))))
+                              NotificationMessageType.CONFIRM.getMessage(),
+                              new MessageAction(YES, YES),
+                              new MessageAction(NO, NO)))))
               .get();
       log.info("Sent messages: {}", response);
     } catch (InterruptedException | ExecutionException e) {
