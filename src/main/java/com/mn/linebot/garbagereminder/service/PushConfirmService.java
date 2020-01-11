@@ -32,18 +32,18 @@ public class PushConfirmService {
 
   public void pushBurnablesAlarm() throws URISyntaxException {
     try {
-      BotApiResponse response =
-          lineMessagingClient
-              .pushMessage(
-                  new PushMessage(
-                      lineBotId,
-                      new TemplateMessage(
-                          NotificationMessageType.BURNABLES.getMessage(),
-                          new ConfirmTemplate(
-                              NotificationMessageType.CONFIRM.getMessage(),
-                              new MessageAction(YES, YES),
-                              new MessageAction(NO, NO)))))
-              .get();
+      ConfirmTemplate confirmTemplate =
+          new ConfirmTemplate(
+              NotificationMessageType.CONFIRM.getMessage(),
+              new MessageAction(YES, YES),
+              new MessageAction(NO, NO));
+
+      TemplateMessage templateMessage =
+          new TemplateMessage(NotificationMessageType.BURNABLES.getMessage(), confirmTemplate);
+
+      PushMessage pushMessage = new PushMessage(lineBotId, templateMessage);
+
+      BotApiResponse response = lineMessagingClient.pushMessage(pushMessage).get();
       log.info("Sent messages: {}", response);
     } catch (InterruptedException | ExecutionException e) {
       throw new RuntimeException(e);

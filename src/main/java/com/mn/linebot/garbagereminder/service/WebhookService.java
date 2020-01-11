@@ -55,12 +55,12 @@ public class WebhookService {
                         return;
                       }
 
-                      this.reply(
-                          replyToken,
+                      List<Message> messages =
                           Arrays.asList(
                               new TextMessage("Display name: " + profile.getDisplayName()),
                               new TextMessage("Status message: " + profile.getStatusMessage()),
-                              new TextMessage("userId: " + userId)));
+                              new TextMessage("userId: " + userId));
+                      this.reply(replyToken, messages);
                     });
           } else {
             this.replyText(replyToken, "Bot can't use profile API without user ID");
@@ -116,8 +116,8 @@ public class WebhookService {
 
   private void reply(@NonNull String replyToken, @NonNull List<Message> messages) {
     try {
-      BotApiResponse apiResponse =
-          lineMessagingClient.replyMessage(new ReplyMessage(replyToken, messages)).get();
+      ReplyMessage replyMessage = new ReplyMessage(replyToken, messages);
+      BotApiResponse apiResponse = lineMessagingClient.replyMessage(replyMessage).get();
       log.info("Sent messages: {}", apiResponse);
     } catch (InterruptedException | ExecutionException e) {
       throw new RuntimeException(e);
