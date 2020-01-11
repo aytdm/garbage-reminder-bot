@@ -5,16 +5,19 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.net.URISyntaxException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 @Slf4j
 @Component
 public class ScheduledTasksService {
+  public static final String TZ = "Asia/Tokyo";
+
+  private static final transient DateTimeFormatter DATE_TIME_FORMAT =
+      DateTimeFormatter.ofPattern("HH:mm:ss");
 
   private final PushConfirmService lineMessagingService;
-  private int i = 0;
-  private static final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 
   ScheduledTasksService(PushConfirmService lineMessagingService) {
     this.lineMessagingService = lineMessagingService;
@@ -27,6 +30,6 @@ public class ScheduledTasksService {
     } catch (URISyntaxException e) {
       log.error("{}", e);
     }
-    log.info("cron executed : " + sdf.format(new Date()));
+    log.debug("cron executed : " + DATE_TIME_FORMAT.format(LocalDate.now(ZoneId.of(TZ))));
   }
 }
