@@ -16,11 +16,10 @@ import java.util.concurrent.ExecutionException;
 @Slf4j
 @Service
 public class PushConfirmService {
+  private final LineMessagingClient lineMessagingClient;
 
   @Value("${garbage.reminder.line_bot_id}")
   private String lineBotId;
-
-  private final LineMessagingClient lineMessagingClient;
 
   PushConfirmService(LineMessagingClient lineMessagingClient) {
     this.lineMessagingClient = lineMessagingClient;

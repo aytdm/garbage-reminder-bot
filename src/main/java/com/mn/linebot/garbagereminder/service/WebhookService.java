@@ -1,7 +1,5 @@
 package com.mn.linebot.garbagereminder.service;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.ReplyMessage;
 import com.linecorp.bot.model.event.Event;
@@ -13,11 +11,18 @@ import com.linecorp.bot.model.message.Message;
 import com.linecorp.bot.model.message.StickerMessage;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.model.response.BotApiResponse;
+import com.mn.linebot.garbagereminder.domain.BadMessageType;
+import com.mn.linebot.garbagereminder.domain.BadStickyType;
+import com.mn.linebot.garbagereminder.domain.GoodMessageType;
+import com.mn.linebot.garbagereminder.domain.GoodStickyType;
+import com.mn.linebot.garbagereminder.domain.Type;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @Slf4j
@@ -78,26 +83,24 @@ public class WebhookService {
         }
       case "yes":
         {
-          List<Map.Entry<String, String>> stickyList = new ArrayList<>(goodStickyList().entries());
-          int index = getListIndex(stickyList.size());
+          GoodStickyType stickyType = Type.of(GoodStickyType.class);
+          String message = Type.of(GoodMessageType.class).getMessage();
           this.reply(
               replyToken,
               Arrays.asList(
-                  new StickerMessage(
-                      stickyList.get(index).getKey(), stickyList.get(index).getValue()),
-                  new TextMessage(selectReplyMessage(goodMessageList()))));
+                  new StickerMessage(stickyType.getPackageId(), stickyType.getStickerId()),
+                  new TextMessage(message)));
           break;
         }
       case "no":
         {
-          List<Map.Entry<String, String>> stickyList = new ArrayList<>(badStickyList().entries());
-          int index = getListIndex(stickyList.size());
+          BadStickyType stickyType = Type.of(BadStickyType.class);
+          String message = Type.of(BadMessageType.class).getMessage();
           this.reply(
               replyToken,
               Arrays.asList(
-                  new StickerMessage(
-                      stickyList.get(index).getKey(), stickyList.get(index).getValue()),
-                  new TextMessage(selectReplyMessage(badMessageList()))));
+                  new StickerMessage(stickyType.getPackageId(), stickyType.getStickerId()),
+                  new TextMessage(message)));
           break;
         }
       default:
@@ -129,87 +132,5 @@ public class WebhookService {
       message = message.substring(0, 1000 - 2) + "……";
     }
     this.reply(replyToken, new TextMessage(message));
-  }
-
-  private String selectReplyMessage(List<String> receivedList) {
-    Collections.shuffle(receivedList);
-    return receivedList.get(getListIndex(receivedList.size()));
-  }
-
-  private int getListIndex(int range) {
-    Random rand = new Random();
-    return rand.nextInt(range);
-  }
-
-  private Multimap<String, String> goodStickyList() {
-
-    Multimap<String, String> goodStickyList = ArrayListMultimap.create();
-
-    goodStickyList.put("1", "4");
-    goodStickyList.put("1", "5");
-    goodStickyList.put("1", "13");
-    goodStickyList.put("1", "14");
-    goodStickyList.put("1", "106");
-    goodStickyList.put("1", "114");
-    goodStickyList.put("1", "125");
-    goodStickyList.put("1", "134");
-    goodStickyList.put("1", "137");
-    goodStickyList.put("1", "138");
-    goodStickyList.put("1", "407");
-    goodStickyList.put("2", "40");
-    goodStickyList.put("2", "41");
-    goodStickyList.put("2", "144");
-    goodStickyList.put("2", "164");
-    goodStickyList.put("2", "172");
-    goodStickyList.put("2", "516");
-
-    return goodStickyList;
-  }
-
-  private Multimap<String, String> badStickyList() {
-
-    Multimap<String, String> badStickyList = ArrayListMultimap.create();
-
-    badStickyList.put("1", "9");
-    badStickyList.put("1", "16");
-    badStickyList.put("1", "108");
-    badStickyList.put("1", "111");
-    badStickyList.put("1", "113");
-    badStickyList.put("1", "118");
-    badStickyList.put("1", "123");
-    badStickyList.put("1", "129");
-    badStickyList.put("2", "18");
-    badStickyList.put("2", "19");
-    badStickyList.put("2", "32");
-    badStickyList.put("2", "152");
-    badStickyList.put("2", "166");
-    badStickyList.put("2", "173");
-    badStickyList.put("2", "39");
-    badStickyList.put("2", "524");
-    badStickyList.put("2", "527");
-
-    return badStickyList;
-  }
-
-  private List<String> goodMessageList() {
-
-    List<String> goodStringList = new ArrayList<>();
-
-    goodStringList.add("Good work \uDBC0\uDC79");
-    goodStringList.add("Awesome！！\uDBC0\uDC2D\uDBC0\uDC2D");
-    goodStringList.add("Keep working on it\uDBC0\uDC8F");
-
-    return goodStringList;
-  }
-
-  private List<String> badMessageList() {
-
-    List<String> badStringList = new ArrayList<>();
-
-    badStringList.add("Please take out the garbage\uDBC0\uDC8D！");
-    badStringList.add("Please take out the garbage by tomorrow morning\uDBC0\uDC8F");
-    badStringList.add("You will take out the garbage, won't you\uDBC0\uDC5F？");
-
-    return badStringList;
   }
 }
