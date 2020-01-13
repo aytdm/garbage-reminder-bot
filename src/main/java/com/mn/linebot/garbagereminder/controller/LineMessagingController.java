@@ -6,6 +6,7 @@ import com.mn.linebot.garbagereminder.service.LineMessagingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URISyntaxException;
@@ -13,6 +14,7 @@ import java.net.URISyntaxException;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("api/v1/alarm")
 public class LineMessagingController {
 
   private final LineMessagingService lineMessagingService;
@@ -22,7 +24,7 @@ public class LineMessagingController {
     return Type.of(BadMessageType.class).getMessage();
   }
 
-  @GetMapping("api/alarm/burnables")
+  @GetMapping("burnables")
   public void pushBurnablesAlarm() {
     try {
       lineMessagingService.pushBurnablesAlarm();
