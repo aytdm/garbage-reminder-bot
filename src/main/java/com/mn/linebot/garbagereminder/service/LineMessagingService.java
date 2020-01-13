@@ -15,11 +15,11 @@ import org.springframework.stereotype.Service;
 import java.net.URISyntaxException;
 import java.util.concurrent.ExecutionException;
 
-/** Push confirm notification service */
+/** Line messaging service */
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class PushConfirmService {
+public class LineMessagingService {
   private static final String YES = "yes";
 
   private static final String NO = "no";

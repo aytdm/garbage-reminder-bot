@@ -1,6 +1,6 @@
 package com.mn.linebot.garbagereminder.task;
 
-import com.mn.linebot.garbagereminder.service.PushConfirmService;
+import com.mn.linebot.garbagereminder.service.LineMessagingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -21,7 +21,7 @@ public class ScheduledTask {
   private static final transient DateTimeFormatter DATE_TIME_FORMAT =
       DateTimeFormatter.ofPattern("HH:mm:ss");
 
-  private final PushConfirmService lineMessagingService;
+  private final LineMessagingService lineMessagingService;
 
   @Scheduled(cron = "${garbage.reminder.cron.burnables}", zone = TZ)
   public void executeBurnablesAlarm() {
