@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.net.URISyntaxException;
 import java.util.concurrent.ExecutionException;
 
+/** Push confirm notification service */
 @Slf4j
 @Service
 @RequiredArgsConstructor

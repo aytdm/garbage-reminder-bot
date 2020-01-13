@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
+/** Regularly executed task scheduler */
 @Slf4j
 @Component
 @RequiredArgsConstructor
