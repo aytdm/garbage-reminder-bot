@@ -29,6 +29,16 @@ import java.util.concurrent.ExecutionException;
 @Service
 public class WebhookService {
 
+  private static final int MAX_LENGTH = 1000;
+
+  private static final String SHOW_PROFILE = "profile";
+
+  private static final String LEAVE_ROOM = "bye";
+
+  private static final String REPLY_YES = "yes";
+
+  private static final String REPLY_NO = "no";
+
   private final LineMessagingClient lineMessagingClient;
 
   WebhookService(LineMessagingClient lineMessagingClient) {
@@ -42,7 +52,7 @@ public class WebhookService {
     log.debug("Got text message from {}: {}", replyToken, text);
 
     switch (text) {
-      case "profile":
+      case SHOW_PROFILE:
         {
           String userId = event.getSource().getUserId();
           if (userId != null) {
@@ -67,7 +77,7 @@ public class WebhookService {
           }
           break;
         }
-      case "bye":
+      case LEAVE_ROOM:
         {
           Source source = event.getSource();
           if (source instanceof GroupSource) {
@@ -81,7 +91,7 @@ public class WebhookService {
           }
           break;
         }
-      case "yes":
+      case REPLY_YES:
         {
           GoodStickyType stickyType = Type.of(GoodStickyType.class);
           String message = Type.of(GoodMessageType.class).getMessage();
@@ -92,7 +102,7 @@ public class WebhookService {
                   new TextMessage(message)));
           break;
         }
-      case "no":
+      case REPLY_NO:
         {
           BadStickyType stickyType = Type.of(BadStickyType.class);
           String message = Type.of(BadMessageType.class).getMessage();
@@ -128,8 +138,8 @@ public class WebhookService {
     if (replyToken.isEmpty()) {
       throw new IllegalArgumentException("replyToken must not be empty");
     }
-    if (message.length() > 1000) {
-      message = message.substring(0, 1000 - 2) + "……";
+    if (message.length() > MAX_LENGTH) {
+      message = message.substring(0, MAX_LENGTH - 2) + "……";
     }
     this.reply(replyToken, new TextMessage(message));
   }
