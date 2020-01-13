@@ -7,51 +7,51 @@ import com.linecorp.bot.model.event.message.ImageMessageContent;
 import com.linecorp.bot.model.event.message.StickerMessageContent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.event.message.VideoMessageContent;
-import com.linecorp.bot.model.message.*;
+import com.linecorp.bot.model.message.Message;
+import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
-import lombok.extern.slf4j.Slf4j;
+import com.mn.linebot.garbagereminder.domain.NotificationMessageType;
 import com.mn.linebot.garbagereminder.service.WebhookService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @LineMessageHandler
+@RequiredArgsConstructor
 public class WebhookController {
 
-    private final WebhookService webhookService;
+  private final WebhookService webhookService;
 
-    WebhookController(WebhookService webhookService) {
-        this.webhookService = webhookService;
-    }
+  @EventMapping
+  public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws Exception {
+    log.debug("event: {}", event);
+    TextMessageContent message = event.getMessage();
+    webhookService.handleTextContent(event.getReplyToken(), event, message);
+  }
 
-    @EventMapping
-    public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws Exception {
-        log.info("event: {}", event);
-        TextMessageContent message = event.getMessage();
-        webhookService.handleTextContent(event.getReplyToken(), event, message);
-    }
+  @EventMapping
+  public void defaultMessageEvent(Event event) {
+    log.debug("event: " + event);
+  }
 
-    @EventMapping
-    public void defaultMessageEvent(Event event) {
-        log.info("event: " + event);
-    }
+  @EventMapping
+  public Message handleStickerMessage(MessageEvent<StickerMessageContent> event) {
+    return new TextMessage(NotificationMessageType.STICKER.getMessage());
+  }
 
-    @EventMapping
-    public Message handleStickerMessage(MessageEvent<StickerMessageContent> event) {
-        return new TextMessage("Thank you for sending stamp ：）");
-    }
+  @EventMapping
+  public Message handleImageMessage(MessageEvent<ImageMessageContent> event) {
+    return new TextMessage(NotificationMessageType.IMAGE.getMessage());
+  }
 
-    @EventMapping
-    public Message handleImageMessage(MessageEvent<ImageMessageContent> event) {
-        return new TextMessage("Thank you for sending image ：D");
-    }
+  @EventMapping
+  public Message handleVideoMessage(MessageEvent<VideoMessageContent> event) {
+    return new TextMessage(NotificationMessageType.VIDEO.getMessage());
+  }
 
-    @EventMapping
-    public Message handleVideoMessage(MessageEvent<VideoMessageContent> event) {
-        return new TextMessage("Thank you for sending video XD");
-    }
-
-    @EventMapping
-    public Message handleAudioMessage(MessageEvent<AudioMessageContent> event) {
-        return new TextMessage("Thank you for sending audio ；）");
-    }
+  @EventMapping
+  public Message handleAudioMessage(MessageEvent<AudioMessageContent> event) {
+    return new TextMessage(NotificationMessageType.AUDIO.getMessage());
+  }
 }

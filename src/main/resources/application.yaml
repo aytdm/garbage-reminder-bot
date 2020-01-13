@@ -1,0 +1,11 @@
+line:
+  bot:
+    channelSecret: ${LINE_BOT_CHANNEL_SECRET}
+    channelToken: ${LINE_BOT_CHANNEL_TOKEN}
+  handler:
+    path: '/callback'
+
+garbage:
+  reminder:
+    cron.burnables: ${LINE_CRON}
+    line_bot_id: ${LINE_ID}

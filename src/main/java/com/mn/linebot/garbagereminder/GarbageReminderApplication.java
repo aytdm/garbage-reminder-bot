@@ -8,7 +8,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 public class GarbageReminderApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(GarbageReminderApplication.class, args);
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(GarbageReminderApplication.class, args);
+  }
 }
