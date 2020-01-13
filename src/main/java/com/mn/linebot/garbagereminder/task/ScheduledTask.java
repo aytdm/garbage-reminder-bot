@@ -1,5 +1,6 @@
-package com.mn.linebot.garbagereminder.service;
+package com.mn.linebot.garbagereminder.task;
 
+import com.mn.linebot.garbagereminder.service.PushConfirmService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -11,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 
 @Slf4j
 @Component
-public class ScheduledTasksService {
+public class ScheduledTask {
   public static final String TZ = "Asia/Tokyo";
 
   private static final transient DateTimeFormatter DATE_TIME_FORMAT =
@@ -19,11 +20,11 @@ public class ScheduledTasksService {
 
   private final PushConfirmService lineMessagingService;
 
-  ScheduledTasksService(PushConfirmService lineMessagingService) {
+  ScheduledTask(PushConfirmService lineMessagingService) {
     this.lineMessagingService = lineMessagingService;
   }
 
-  @Scheduled(cron = "${garbage.reminder.cron.burnables}", zone = "Asia/Tokyo")
+  @Scheduled(cron = "${garbage.reminder.cron.burnables}", zone = TZ)
   public void executeBurnablesAlarm() {
     try {
       lineMessagingService.pushBurnablesAlarm();
