@@ -17,6 +17,7 @@ import com.mn.linebot.garbagereminder.domain.GoodMessageType;
 import com.mn.linebot.garbagereminder.domain.GoodStickyType;
 import com.mn.linebot.garbagereminder.domain.Type;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,7 @@ import java.util.concurrent.ExecutionException;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class WebhookService {
 
   private static final int MAX_LENGTH = 1000;
@@ -40,10 +42,6 @@ public class WebhookService {
   private static final String REPLY_NO = "no";
 
   private final LineMessagingClient lineMessagingClient;
-
-  WebhookService(LineMessagingClient lineMessagingClient) {
-    this.lineMessagingClient = lineMessagingClient;
-  }
 
   public void handleTextContent(String replyToken, Event event, TextMessageContent content)
       throws Exception {

@@ -13,17 +13,15 @@ import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 import com.mn.linebot.garbagereminder.domain.NotificationMessageType;
 import com.mn.linebot.garbagereminder.service.WebhookService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @LineMessageHandler
+@RequiredArgsConstructor
 public class WebhookController {
 
   private final WebhookService webhookService;
-
-  WebhookController(WebhookService webhookService) {
-    this.webhookService = webhookService;
-  }
 
   @EventMapping
   public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws Exception {
