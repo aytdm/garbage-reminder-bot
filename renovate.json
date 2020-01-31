@@ -4,5 +4,18 @@
   ],
   "assignees": [
     "aytdm"
+  ],
+  "packageRules": [
+    {
+      "updateTypes": [
+        "minor",
+        "patch"
+      ],
+      "automergeType": "branch",
+      "automerge": true
+    }
+  ],
+  "labels": [
+    "dependencies"
   ]
 }
