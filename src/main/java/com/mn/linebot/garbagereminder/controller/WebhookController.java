@@ -2,11 +2,7 @@ package com.mn.linebot.garbagereminder.controller;
 
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
-import com.linecorp.bot.model.event.message.AudioMessageContent;
-import com.linecorp.bot.model.event.message.ImageMessageContent;
-import com.linecorp.bot.model.event.message.StickerMessageContent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
-import com.linecorp.bot.model.event.message.VideoMessageContent;
 import com.linecorp.bot.model.message.Message;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
@@ -26,8 +22,7 @@ public class WebhookController {
   @EventMapping
   public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws Exception {
     log.debug("event: {}", event);
-    TextMessageContent message = event.getMessage();
-    webhookService.handleTextContent(event.getReplyToken(), event, message);
+    webhookService.handleTextContent(event);
   }
 
   @EventMapping
@@ -36,22 +31,22 @@ public class WebhookController {
   }
 
   @EventMapping
-  public Message handleStickerMessage(MessageEvent<StickerMessageContent> event) {
+  public Message handleStickerMessage() {
     return new TextMessage(NotificationMessageType.STICKER.getMessage());
   }
 
   @EventMapping
-  public Message handleImageMessage(MessageEvent<ImageMessageContent> event) {
+  public Message handleImageMessage() {
     return new TextMessage(NotificationMessageType.IMAGE.getMessage());
   }
 
   @EventMapping
-  public Message handleVideoMessage(MessageEvent<VideoMessageContent> event) {
+  public Message handleVideoMessage() {
     return new TextMessage(NotificationMessageType.VIDEO.getMessage());
   }
 
   @EventMapping
-  public Message handleAudioMessage(MessageEvent<AudioMessageContent> event) {
+  public Message handleAudioMessage() {
     return new TextMessage(NotificationMessageType.AUDIO.getMessage());
   }
 }

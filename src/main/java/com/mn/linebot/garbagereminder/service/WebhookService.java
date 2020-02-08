@@ -2,7 +2,7 @@ package com.mn.linebot.garbagereminder.service;
 
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.ReplyMessage;
-import com.linecorp.bot.model.event.Event;
+import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.event.source.GroupSource;
 import com.linecorp.bot.model.event.source.RoomSource;
@@ -44,10 +44,10 @@ public class WebhookService {
 
   private final LineMessagingClient lineMessagingClient;
 
-  public void handleTextContent(String replyToken, Event event, TextMessageContent content)
-      throws Exception {
+  public void handleTextContent(MessageEvent<TextMessageContent> event) throws Exception {
 
-    String text = content.getText();
+    String text = event.getMessage().getText();
+    String replyToken = event.getReplyToken();
     log.debug("Got text message from {}: {}", replyToken, text);
 
     switch (text) {
