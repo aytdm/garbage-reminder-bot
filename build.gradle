@@ -1,0 +1,35 @@
+plugins {
+  id 'java'
+  id 'org.springframework.boot' version '2.2.13.RELEASE'
+  id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+}
+
+ext {
+  lombokVersion = '1.18.12'
+}
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  implementation 'org.springframework.boot:spring-boot-starter-web'
+
+  annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+  compileOnly "org.projectlombok:lombok:${lombokVersion}"
+
+  testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+group = 'com.mn.linebot'
+description = 'garbage-reminder'
+
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(8)
+  }
+}
+
+test {
+  useJUnitPlatform()
+}
