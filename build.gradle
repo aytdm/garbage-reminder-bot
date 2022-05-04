@@ -6,6 +6,7 @@ plugins {
 
 ext {
   lombokVersion = '1.18.24'
+  retrofit2Version = '2.9.0'
 }
 
 repositories {
@@ -14,6 +15,10 @@ repositories {
 
 dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-web'
+  implementation 'com.linecorp.bot:line-bot-spring-boot:4.8.0'
+  implementation "com.squareup.retrofit2:retrofit:${retrofit2Version}"
+  implementation "com.squareup.retrofit2:converter-jackson:${retrofit2Version}"
+  implementation 'com.google.guava:guava:30.0-jre'
 
   annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
   compileOnly "org.projectlombok:lombok:${lombokVersion}"
