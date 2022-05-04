@@ -1,3 +1,11 @@
+server:
+  shutdown: graceful
+  port: ${PORT}
+
+spring:
+  lifecycle:
+    timeout-per-shutdown-phase: 15s
+
 line:
   bot:
     channelSecret: ${LINE_BOT_CHANNEL_SECRET}
