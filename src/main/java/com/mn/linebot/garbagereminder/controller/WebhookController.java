@@ -2,8 +2,11 @@ package com.mn.linebot.garbagereminder.controller;
 
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
+import com.linecorp.bot.model.event.message.AudioMessageContent;
+import com.linecorp.bot.model.event.message.ImageMessageContent;
+import com.linecorp.bot.model.event.message.StickerMessageContent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
-import com.linecorp.bot.model.message.Message;
+import com.linecorp.bot.model.event.message.VideoMessageContent;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
@@ -31,22 +34,26 @@ public class WebhookController {
   }
 
   @EventMapping
-  public Message handleStickerMessage() {
-    return new TextMessage(NotificationMessageType.STICKER.getMessage());
+  public void handleStickerMessage(MessageEvent<StickerMessageContent> event) {
+    webhookService.reply(
+        event.getReplyToken(), new TextMessage(NotificationMessageType.STICKER.getMessage()));
   }
 
   @EventMapping
-  public Message handleImageMessage() {
-    return new TextMessage(NotificationMessageType.IMAGE.getMessage());
+  public void handleImageMessage(MessageEvent<ImageMessageContent> event) {
+    webhookService.reply(
+        event.getReplyToken(), new TextMessage(NotificationMessageType.IMAGE.getMessage()));
   }
 
   @EventMapping
-  public Message handleVideoMessage() {
-    return new TextMessage(NotificationMessageType.VIDEO.getMessage());
+  public void handleVideoMessage(MessageEvent<VideoMessageContent> event) {
+    webhookService.reply(
+        event.getReplyToken(), new TextMessage(NotificationMessageType.VIDEO.getMessage()));
   }
 
   @EventMapping
-  public Message handleAudioMessage() {
-    return new TextMessage(NotificationMessageType.AUDIO.getMessage());
+  public void handleAudioMessage(MessageEvent<AudioMessageContent> event) {
+    webhookService.reply(
+        event.getReplyToken(), new TextMessage(NotificationMessageType.AUDIO.getMessage()));
   }
 }

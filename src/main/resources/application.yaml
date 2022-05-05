@@ -1,9 +1,17 @@
+server:
+  shutdown: graceful
+  port: ${PORT}
+
+spring:
+  lifecycle:
+    timeout-per-shutdown-phase: 15s
+
 line:
   bot:
     channelSecret: ${LINE_BOT_CHANNEL_SECRET}
     channelToken: ${LINE_BOT_CHANNEL_TOKEN}
   handler:
-    path: '/callback'
+    path: /callback
 
 garbage:
   reminder:

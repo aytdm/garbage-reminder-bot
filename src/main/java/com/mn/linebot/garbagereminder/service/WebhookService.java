@@ -119,7 +119,7 @@ public class WebhookService {
     }
   }
 
-  private void reply(@NonNull String replyToken, @NonNull Message message) {
+  public void reply(@NonNull String replyToken, @NonNull Message message) {
     reply(replyToken, Collections.singletonList(message));
   }
 
